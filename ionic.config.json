@@ -1,0 +1,7 @@
+{
+  "name": "mySpotApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
