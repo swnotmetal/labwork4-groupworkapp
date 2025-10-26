@@ -10,7 +10,7 @@ import {
 } from '@ionic/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig.ts';
-import './SignUp.css'; // optional CSS file
+import './SignUp.css'; 
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');
