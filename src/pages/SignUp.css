@@ -1,0 +1,112 @@
+.centered-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  --background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.signup-container {
+  width: 100%;
+  max-width: 520px;
+  padding: 32px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  background-color: #ffffff;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0 24px;
+  align-items: center;
+}
+
+.input-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+
+.brand {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.brand-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  color: #1e40af;
+  margin: 0;
+  letter-spacing: -0.8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.link-btn {
+  background: transparent;
+  color: #2b6cb0;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.link-btn:hover {
+  background-color: #f3f4f6;
+}
+
+.below-cta {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 24px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+ion-button {
+  margin-top: 16px;
+}
+
+ion-item {
+  margin-bottom: 16px;
+  width: 100%;
+  --padding-start: 0;
+  --padding-end: 0;
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
+  --background: transparent;
+  --border-width: 0;
+  --border-style: none;
+  --border-color: transparent;
+  text-align: left;
+  --min-height: 56px;
+}
+
+ion-label {
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  display: block;
+  width: 100%;
+}
+
+ion-input {
+  text-align: left;
+  width: 100%;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  font-size: 16px;
+}
