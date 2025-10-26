@@ -2,6 +2,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Route } from 'react-router-dom';
 import MapPage from './pages/MapPage';
+import LoginPage from './pages/LoginPage'; // Where I can find my login page component.
 
 /* Core CSS required for Ionic components */
 import '@ionic/react/css/core.css';
@@ -25,7 +26,8 @@ const App = () => {
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route exact path="/" component={MapPage} />
+          <Route path="/" element={<MapPage />} />
+          <Route path="/login" element={<LoginPage />} /> // This route points to my LoginPage component.
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
