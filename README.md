@@ -4,6 +4,10 @@ A location-based map application built with Ionic React for exploring and bookma
 
 **Live Demo**: [https://myspotr0334.netlify.app/](https://myspotr0334.netlify.app/)
 
+**Test Account** (for quick testing without signup):
+- Email: `testuser@gmail.com`
+- Password: `123456`
+
 ---
 
 ## Quick Start
