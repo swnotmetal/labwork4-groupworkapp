@@ -8,7 +8,7 @@ import {
   IonButton,
   IonText
 } from '@ionic/react';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig.ts';
 import { useIonRouter } from '@ionic/react';
 import './Login.css';
@@ -23,7 +23,15 @@ const Login: React.FC = () => {
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
     if (savedEmail) setEmail(savedEmail);
-  }, []);
+    
+    // Redirect to map if already authenticated
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push('/map', 'forward');
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   const handleLogin = async () => {
     try {
