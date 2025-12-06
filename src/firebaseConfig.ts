@@ -2,13 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDLZzZr2zFf-AVrm26a6KUMB_5tAjXgpQA",
-  authDomain: "myspotapp-a4570.firebaseapp.com",
-  projectId: "myspotapp-a4570",
-  storageBucket: "myspotapp-a4570.firebasestorage.app",
-  messagingSenderId: "421543617589",
-  appId: "1:421543617589:web:148351dd3f769f5fa8bd7c"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+

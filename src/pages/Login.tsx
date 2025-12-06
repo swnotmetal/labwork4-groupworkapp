@@ -6,19 +6,40 @@ import {
   IonLabel,
   IonInput,
   IonButton,
-  IonText
+  IonText,
+  IonSpinner
 } from '@ionic/react';
 import { signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig.ts';
 import { useIonRouter } from '@ionic/react';
+import * as yup from 'yup';
 import './Login.css';
+
+// Validation schemas
+const loginSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email address.')
+    .required('Please enter your email address.'),
+  password: yup
+    .string()
+    .required('Please enter your password.')
+});
+
+const passwordResetSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Please enter a valid email address.')
+    .required('Please enter your email address first.')
+});
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
-  const router = useIonRouter(); // 
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useIonRouter();
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
@@ -33,7 +54,41 @@ const Login: React.FC = () => {
     return () => unsubscribe();
   }, [router]);
 
+  // Helper function to get user-friendly error messages
+  const getErrorMessage = (errorCode: string): string => {
+    switch (errorCode) {
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address.';
+      case 'auth/user-disabled':
+        return 'This account has been disabled. Please contact support.';
+      case 'auth/user-not-found':
+        return 'No account found with this email. Please sign up first.';
+      case 'auth/wrong-password':
+        return 'Incorrect password. Please try again.';
+      case 'auth/invalid-credential':
+        return 'Invalid email or password. Please check your credentials.';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later or reset your password.';
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your internet connection.';
+      default:
+        return 'Login failed. Please try again.';
+    }
+  };
+
   const handleLogin = async () => {
+    // Clear previous errors
+    setError('');
+
+    // Validate inputs using Yup
+    try {
+      await loginSchema.validate({ email, password }, { abortEarly: false });
+    } catch (validationError: any) {
+      setError(validationError.errors[0]);
+      return;
+    }
+
+    setIsLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
       if (rememberMe) localStorage.setItem('email', email);
@@ -41,20 +96,34 @@ const Login: React.FC = () => {
       
       router.push('/map', 'forward');
     } catch (err: any) {
-      setError(err.message);
+      const errorMessage = getErrorMessage(err.code);
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleForgotPassword = async () => {
-    if (!email) {
-      setError("Please enter your email first");
+    setError('');
+    
+    // Validate email using Yup
+    try {
+      await passwordResetSchema.validate({ email }, { abortEarly: false });
+    } catch (validationError: any) {
+      setError(validationError.errors[0]);
       return;
     }
+
+    setIsLoading(true);
     try {
       await sendPasswordResetEmail(auth, email);
-      alert("Password reset email sent!");
+      alert("Password reset email sent! Please check your inbox.");
+      setError('');
     } catch (err: any) {
-      setError(err.message);
+      const errorMessage = getErrorMessage(err.code);
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,7 +135,13 @@ const Login: React.FC = () => {
             <h1 className="brand-title">My Spot</h1>
           </div>
 
-          {error && <IonText color="danger" className="error-text">{error}</IonText>}
+          {error && (
+            <div className="error-message">
+              <IonText color="danger" className="error-text">
+                <p>{error}</p>
+              </IonText>
+            </div>
+          )}
 
           <div className="form-group">
             <div className="input-wrapper">
@@ -112,8 +187,13 @@ const Login: React.FC = () => {
             </div>
           </div>
 
-          <IonButton expand="block" size="large" onClick={handleLogin}>
-            Log in
+          <IonButton 
+            expand="block" 
+            size="large" 
+            onClick={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? <IonSpinner name="crescent" /> : 'Log in'}
           </IonButton>
 
           <div className="below-cta">
