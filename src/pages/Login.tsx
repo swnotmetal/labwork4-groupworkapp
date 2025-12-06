@@ -9,7 +9,7 @@ import {
   IonText,
   IonSpinner
 } from '@ionic/react';
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebaseConfig.ts';
 import { useIonRouter } from '@ionic/react';
 import * as yup from 'yup';
@@ -44,7 +44,15 @@ const Login: React.FC = () => {
   useEffect(() => {
     const savedEmail = localStorage.getItem('email');
     if (savedEmail) setEmail(savedEmail);
-  }, []);
+    
+    // Redirect to map if already authenticated
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        router.push('/map', 'forward');
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   // Helper function to get user-friendly error messages
   const getErrorMessage = (errorCode: string): string => {

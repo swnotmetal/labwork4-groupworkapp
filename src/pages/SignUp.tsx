@@ -11,6 +11,9 @@ import {
 } from '@ionic/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig.ts';
+<<<<<<< HEAD
+import './SignUp.css'; 
+=======
 import * as yup from 'yup';
 import './SignUp.css';
 
@@ -31,6 +34,7 @@ const signupSchema = yup.object().shape({
     .required('Please confirm your password.')
     .oneOf([yup.ref('password')], 'Passwords do not match. Please try again.')
 });
+>>>>>>> cc896442711e49f58ff357f4e2d83b302af470f9
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState('');

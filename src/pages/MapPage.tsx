@@ -19,7 +19,8 @@ import {
   IonItemOptions,
   IonItemOption,
 } from '@ionic/react';
-import { trashOutline, listOutline } from 'ionicons/icons';
+import { trashOutline, listOutline, personOutline } from 'ionicons/icons';
+import { useIonRouter } from '@ionic/react';
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import { useState, useEffect } from 'react';
 import { LatLng } from 'leaflet';
@@ -28,6 +29,8 @@ import { loadSpots, addSpot, deleteSpot } from '../utils/storage';
 import './MapPage.css';
 import L from 'leaflet';
 import MapController from '../components/MapController';
+import { auth } from '../firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const MapPage = () => {
   // State management
@@ -39,6 +42,17 @@ const MapPage = () => {
   const [emoji, setEmoji] = useState('📍');
   const [category, setCategory] = useState<SpotCategory>(SpotCategory.OTHER);
   const [flyToLocation, setFlyToLocation] = useState<[number, number] | null>(null);
+  const router = useIonRouter();
+
+  // Authentication guard - redirect to login if not authenticated
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        router.push('/login', 'back');
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   // Load spots from localStorage when component mounts
   useEffect(() => {
@@ -130,6 +144,9 @@ const MapPage = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle>My Spots 📍</IonTitle>
+          <IonButton slot="end" fill="clear" color="light" onClick={() => router.push('/profile', 'forward')}>
+            <IonIcon icon={personOutline} slot="icon-only" />
+          </IonButton>
         </IonToolbar>
       </IonHeader>
 

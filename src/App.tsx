@@ -19,6 +19,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import MyProfile from './pages/MyProfile';
 
 setupIonicReact();
 
@@ -28,6 +29,7 @@ const App = () => {
       <IonReactRouter>
         <IonRouterOutlet>
           <Route path="/map" component={MapPage} />
+          <Route path="/profile" component={MyProfile} />
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={Login} exact />
           <Route exact path="/" component={Login} />
